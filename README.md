@@ -24,17 +24,30 @@ pip install -r requirements.txt --upgrade
 
 ### Set the "config.ini" file based on the "config.init.sample".
 ```bash
-cp config.init.sample config.ini
-vi config.ini
+cp config.sample.yml config.yml
+vi config.yml
 ```
 
-### Execute "report.py"
+### Execute "sync.py"
 ```bash
-python report.py
+python sync.py
+```
+#### Opções ####
+```bash
+python sync.py [-t] [-c|config <config.yml>] [-d|debug <level>] [-i|i <course-id>] -e|environment <environment>
 ```
 
+ * -e --environment <environment>
+    * define o ambiente destino: "stage" ou "prod" 
+ * -d --debug <debug level>
+    * re-define o nível de logging: DEBUG, INFO, WARNING, CRITICAL, FATAL 
+ * -c --config <config file>
+    * ficheiro de configuração. Por omissão, config.yml na pasta atual
+ * -i --course <course-id>
+    * identifica um curso único para atualizar
+ * -t
 
-### 
+### Informação Adicional ###
 
 Estrutura de acesso MongoDB do OpenEDX.
  

@@ -1,0 +1,97 @@
+general:
+   logging:
+     version: 1
+     disable_existing_loggers: true
+     root:
+       level: NOTSET
+       handlers: [console, file]
+       propogate: yes
+     formatters:
+       standard:
+         datefmt: "%Y-%m-%d %H:%M:%S"
+         format: "%(asctime)s %(levelname)-10s %(message)s"
+       error:
+         format: "%(levelname)s <PID %(process)d:%(processName)s> %(name)s.%(funcName)s(): %(message)s"
+     handlers:
+       console:
+         class: logging.StreamHandler
+         level: DEBUG
+         stream: ext://sys.stdout
+         formatter: standard
+       file:
+         class: logging.handlers.RotatingFileHandler
+         filename: sync.log
+         maxBytes: 1024
+         backupCount: 3
+         level: INFO
+         formatter: standard
+         encoding: utf8
+
+
+prod:
+  lms:
+    api:
+      server: lms.nau.edu.pt
+    db:
+      host: localhost
+      port: 3308
+      user: <<USER>>
+      password: <<PASS>>
+      database: edxapp
+    mongo:
+      rs: rs0
+      host: localhost
+      port: 27031
+      user: edxapp
+      password: <<PASS>>
+      db: edxapp
+  mks:
+    - id: pt
+      language: pt_PT
+      server: www.nau.edu.pt
+      username: <<WP_USER>>
+      password: <<WP_PASS>>
+      lms: https://lms.nau.edu.pt
+    - id: en
+      language: en_US
+      server: en-www.nau.edu.pt
+      username: <<USER>>
+      password: <<PASS>>
+      lms: https://lms.nau.edu.pt
+
+
+stage:
+  lms:
+    api:
+      server: lms.stage.nau.fccn.pt
+    db:
+      host: localhost
+      port: 3307
+      user: <<WP_USER>>
+      password: <<PASS>>
+      database: edxapp
+    mongo:
+      rs: rs0
+      host: localhost
+      port: 27030
+      user: <<WP_USER>>
+      password: <<PASS>>
+      db: edxapp
+  mks:
+    - id: pt
+      language: pt_PT
+      server: www.stage.nau.fccn.pt
+      lms: https://lms.stage.nau.fccn.pt
+      basic_auth_username: <<USER>>
+      basic_auth_password: <<PASS>>
+      username: <<WP_USER>>
+      password: 9wZRlbgGoaoG88Mamr
+    - id: en
+      language: en_US
+      server: en-www.stage.nau.fccn.pt
+      lms: https://lms.stage.nau.fccn.pt
+      basic_auth_username: <<USER>>
+      basic_auth_password: <<PASS>>
+      username: <<WP_USER>>
+      password: 9wZRlbgGoaoG88Mamr
+

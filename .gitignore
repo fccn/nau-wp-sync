@@ -1,0 +1,5 @@
+___*.py
+*.log
+config.yml
+.idea
+venv/

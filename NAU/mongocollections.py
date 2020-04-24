@@ -24,8 +24,11 @@ class MongoCollections:
         try:
             self.db = self.connection[self.settings.get('db')]
             self.db.authenticate(self.settings.get('user'), self.settings.get('password'))
+        except errors.OperationFailure as e:
+            log.critical("MongoDB Operation Failure: {msg}".format(msg=e))
+            sys.exit(3)
         except errors.ServerSelectionTimeoutError as e:
-            log.critical("MongoDB Connect: {msg}".format(msg=e))
+            log.critical("MongoDB Server Timeout: {msg}".format(msg=e))
             sys.exit(3)
         
     

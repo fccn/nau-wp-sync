@@ -3,3 +3,4 @@ ___*.py
 config.yml
 .idea
 venv/
+NAU/__pycache__

@@ -1,5 +1,6 @@
 import logging as log
 
+import sys
 import mysql.connector
 
 class SQLTables:
@@ -36,8 +37,14 @@ class SQLTables:
 		self.connection.close()
 	
 	def _getcursor(self, query):
+		
 		if not self.connection:
-			self.connect()
+			
+			try:
+				self.connect()
+			except mysql.connector.errors.InterfaceError as e:
+				log.critical("MySQL Connect: {msg}".format(msg=e))
+				sys.exit(3)
 		
 		log.debug("SQL query '%s'" % query)
 		return self.connection.cursor()

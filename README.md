@@ -11,7 +11,7 @@
 ```bash
 virtualenv venv --python=python3
 source venv/bin/activate
-pip install -r requirements.txt --upgrade
+python -m pip install -r requirements.txt --upgrade
 ```
 
 ### Set the "config.ini" file based on the "config.init.sample".

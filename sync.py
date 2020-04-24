@@ -307,7 +307,7 @@ def main():
                 changes = course_page.syncProperties(course, propertiesToSync)
                 if changes > 0:
                     if nau.params.get('test'):
-                        log.warning('Not changing {page}@{environment} - {changes} changes found!'.\
+                        log.warning('Test flag enabled! Not changing {page}@{environment} - {changes} changes found!'.\
                                  format(page=course_page.getId(),
                                         environment=tenv,
                                         changes=changes))

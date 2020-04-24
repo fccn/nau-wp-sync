@@ -1,13 +1,5 @@
 # DataSync - MySQL+MongoDB -> WordPress
 
-Exports data from MySQL database into an Excel Spreedsheet. On the NAU project it is
-used as a gateway for PowerBI data exploration.
-
-Should be run once a day and the .xls file available to the PowerBI cloud engine
-in order for NAU Managers to be able drill down data.
-
-The queries should NEVER have reference to individual users. This means that the .xls
-file should never have the fields "auth_user.*" or "user_id" directly available.
 
 # Usage
 
@@ -46,6 +38,7 @@ python sync.py [-t] [-c|config <config.yml>] [-d|debug <level>] [-i|i <course-id
  * -i --course <course-id>
     * identifica um curso único para atualizar
  * -t
+    * modo de teste - não aplica modificações no wordpress destino
 
 ### Informação Adicional ###
 

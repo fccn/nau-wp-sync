@@ -26,7 +26,7 @@ python sync.py
 ```
 #### Opções ####
 ```bash
-python sync.py [-t] [-c|config <config.yml>] [-d|debug <level>] [-i|i <course-id>] -e|environment <environment>
+python sync.py [-t] [-c|--config <config.yml>] [-d|--debug <level>] [-i|--course <course-id>] -e|environment <environment>
 ```
 
  * -e --environment <environment>
@@ -43,14 +43,12 @@ python sync.py [-t] [-c|config <config.yml>] [-d|debug <level>] [-i|i <course-id
 ### Informação Adicional ###
 
 Estrutura de acesso MongoDB do OpenEDX.
- 
+
 Conceitos:
 1. A collection “active_versions” tem os cursos ativos no momento
 1. A collection “structures” tem os cursos em histórico
 1. A collection “definitions” tem os objetos propriamente ditos
 
- 
- 
 O passo de pesquisa é sempre:
  -	Um curso é definido por:
       - Course

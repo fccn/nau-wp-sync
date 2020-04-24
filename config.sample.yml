@@ -85,7 +85,7 @@ stage:
       basic_auth_username: <<USER>>
       basic_auth_password: <<PASS>>
       username: <<WP_USER>>
-      password: 9wZRlbgGoaoG88Mamr
+      password: <<WP_PASS>>
     - id: en
       language: en_US
       server: en-www.stage.nau.fccn.pt
@@ -93,5 +93,5 @@ stage:
       basic_auth_username: <<USER>>
       basic_auth_password: <<PASS>>
       username: <<WP_USER>>
-      password: 9wZRlbgGoaoG88Mamr
+      password: <<WP_PASS>>
 

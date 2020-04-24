@@ -1,13 +1,5 @@
 # DataSync - MySQL+MongoDB -> WordPress
 
-Exports data from MySQL database into an Excel Spreedsheet. On the NAU project it is
-used as a gateway for PowerBI data exploration.
-
-Should be run once a day and the .xls file available to the PowerBI cloud engine
-in order for NAU Managers to be able drill down data.
-
-The queries should NEVER have reference to individual users. This means that the .xls
-file should never have the fields "auth_user.*" or "user_id" directly available.
 
 # Usage
 
@@ -19,7 +11,7 @@ file should never have the fields "auth_user.*" or "user_id" directly available.
 ```bash
 virtualenv venv --python=python3
 source venv/bin/activate
-pip install -r requirements.txt --upgrade
+python -m pip install -r requirements.txt --upgrade
 ```
 
 ### Set the "config.ini" file based on the "config.init.sample".
@@ -34,7 +26,7 @@ python sync.py
 ```
 #### Opções ####
 ```bash
-python sync.py [-t] [-c|config <config.yml>] [-d|debug <level>] [-i|i <course-id>] -e|environment <environment>
+python sync.py [-t] [-c|--config <config.yml>] [-d|--debug <level>] [-i|--course <course-id>] -e|environment <environment>
 ```
 
  * -e --environment <environment>
@@ -46,18 +38,17 @@ python sync.py [-t] [-c|config <config.yml>] [-d|debug <level>] [-i|i <course-id
  * -i --course <course-id>
     * identifica um curso único para atualizar
  * -t
+    * modo de teste - não aplica modificações no wordpress destino
 
 ### Informação Adicional ###
 
 Estrutura de acesso MongoDB do OpenEDX.
- 
+
 Conceitos:
 1. A collection “active_versions” tem os cursos ativos no momento
 1. A collection “structures” tem os cursos em histórico
 1. A collection “definitions” tem os objetos propriamente ditos
 
- 
- 
 O passo de pesquisa é sempre:
  -	Um curso é definido por:
       - Course

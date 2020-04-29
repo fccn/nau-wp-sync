@@ -242,7 +242,7 @@ def main():
             
             if course_page:
                 block_updates = course_page.getField('block-auto-updates')
-                if block_updates == 1:
+                if block_updates == '1':
                     # Just skip to next course!
                     log.info('Skipping data retrieval for page {page} on {environment} as block-auto-updates enabled!' \
                              .format(page=course_page.getId(),

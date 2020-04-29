@@ -284,7 +284,8 @@ class CoursePage():
             
             if course_property_found:  # if field found
                 # Located Field, updating
-                if is_different(value, page_custom_field['value']):  # if different value, update whatever the value
+                log.debug("Checking field: {field} : {value}".format(field=name, value=sanitize_value4log(page_custom_field['value'])))
+                if is_different(page_custom_field['value'], value):  # if different value, update whatever the value
                     last_value = page_custom_field['value']
                     page_custom_field['value'] = value
                     changes_count += 1
@@ -292,7 +293,7 @@ class CoursePage():
                         "Update page {id} width field ({key}) with value: «{value}» was «{last}»".format(
                             id=self._page.id, key=name, value=sanitize_value4log(value), last=sanitize_value4log(last_value)))
             else:
-                if not value:  # if not empty, don't create field with empty value
+                if value:  # if not empty, create field with value. Skip if no value.
                     self._page.custom_fields.append({
                         'key': name,
                         'value': value

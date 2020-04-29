@@ -145,6 +145,9 @@ class MarketingSite:
         
         visibility = course.getField('nau_lms_course_catalog_visibility')
         
+        if not visibility :
+            visibility = "none"
+            
         if visibility.lower() == "none":
             page.status = 'private'
 
@@ -253,7 +256,7 @@ class CoursePage():
         changes_count = 0
         
         auto_update = self.getField('update-overview')
-        if auto_update == 1:
+        if auto_update == '1':
     
             log.info('Preparing content for update @ {page} {title}' \
                      .format(page=self.getId(),
@@ -266,7 +269,7 @@ class CoursePage():
                 self._page.content = new_content
                 changes_count += 1
         else:
-            log.warning('Auto Update Disabled, skipping content updating @ {page} {title}' \
+            log.warning('Auto Update Disabled, skipping content update @ {page} {title}' \
                      .format(page=self.getId(),
                              title=self.getTitle()))
 

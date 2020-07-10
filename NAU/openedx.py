@@ -35,6 +35,12 @@ class LMS:
             'api': self._api.status(),
         }
     
+    def SQLQuery(self, sql):
+        return self._sql.query(sql);
+    
+    def SQLgitGet(self, sql):
+        return self._sql.get(sql);
+    
     def getOrganizations(self):
         return self._sql.query("SELECT * from organizations_organization")
     

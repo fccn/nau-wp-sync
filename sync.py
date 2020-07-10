@@ -282,7 +282,7 @@ def main():
                                             certs=course["Certificates"],
                                             enrolls=course["Enrollments"]))
                                             
-                        log.warning('Marging {page}@{environment} EnrollmentDataAPI from prod:{prod_id}' \
+                        log.warning('Merging {page}@{environment} EnrollmentDataAPI from prod:{prod_id}' \
                                     .format(page=course_page.getId(),
                                             environment=tenv,
                                             prod_id=course_prod_id))

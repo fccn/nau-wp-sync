@@ -182,7 +182,8 @@ class MarketingSite:
 			sys.exit(4)
 		except Exception as e:
 			log.critical("Unexpected error: {msg}".format(msg=sys.exc_info()[0]))
-			sys.exit(4)
+            log.debug("Skipping... {page_id}".format(page_id=page.id))
+            return False
 		
 		return True
 

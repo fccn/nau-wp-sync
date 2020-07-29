@@ -87,7 +87,7 @@ class OpenEDXAPI:
 			return json.loads(str_response)
 		
 		except urllib.error.HTTPError as e:
-			log.error("Message back from API server looking for {course}: {code}:{reason}"
-					  .format(course=course_id, code=e.code, reason=e.reason))
+			log.error("Message back from API server looking for {course}: {code}:{reason}". \
+                      format(course=course_id, code=e.code, reason=e.reason))
 		
 		return None

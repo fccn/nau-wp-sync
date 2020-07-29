@@ -317,7 +317,10 @@ def main():
                                         environment=tenv,
                                         changes=changes))
 
-                        dest_site.updateCoursePage(course_page)
+                        if not dest_site.updateCoursePage(course_page):
+                            log.warning('Changes detected, but not updated due to unknow error on {page}@{environment}'. \
+                                format(page=course_page.getId(),
+                                       environment=tenv))
                 else:
                     log.warning('No changes detected on {page}@{environment}'. \
                                 format(page=course_page.getId(),

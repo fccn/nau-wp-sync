@@ -276,6 +276,7 @@ class CoursePage():
                                  title=self.getTitle()))
                 self._page.content = new_content
                 changes_count += 1
+                list_of_changes.append("page_content")
         else:
             log.warning('Auto Update Disabled, skipping content update @ {page} {title}' \
                         .format(page=self.getId(),

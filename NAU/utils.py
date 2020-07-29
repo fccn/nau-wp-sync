@@ -3,6 +3,9 @@ import logging as log
 import datetime
 
 
+def is_IXR_Date(s):
+	return s.startswith('O:8:"IXR_Date":7:{')
+
 def IXR_Date(datetime_obj):
 	# 2020-12-31 12:00:00
 	# O:8:"IXR_Date":7:{s:4:"year";s:4:"2020";s:5:"month";s:2:"12";s:3:"day";s:2:"31";s:4:"hour";s:2:"12";s:6:"minute";s:2:"00";s:6:"second";s:2:"00";s:8:"timezone";s:0:"";}
@@ -49,6 +52,18 @@ def sanitize_value4log(s):
 
 def is_different(a, b):
 	log.debug("Comparing {ta} with {tb}".format(ta=type(a), tb=type(b)))
+
+    # IXR_Date is str type with a special format
+	# it is easier to convert datetime into IXR_Date than IXR_Date in datetime
+	# convert datetime into IXR_Date if detected.
+
+	if type(b) is str and type(a) is datetime.datetime:
+		if is_IXR_Date(b):
+			a=IXR_Date(a)
+	
+	if type(b) is datetime.datetime and type(a) is str:
+		if is_IXR_Date(a):
+			b=IXR_Date(b)
 	
 	if type(a) == type(b):
 		return a != b

@@ -106,8 +106,8 @@ def propertiesToSync(course, base_url):
         nau_lms_course_id=course["id"],
         nau_lms_course_effort=course['effort'],
     
-        nau_lms_course_start=course['start'],
-        nau_lms_course_end=course['end'],
+        # nau_lms_course_start=course['start'],
+        # nau_lms_course_end=course['end'],
         
         nau_lms_course_enrollment_start=course['enrollment_start'],
         nau_lms_course_enrollment_end=course['enrollment_end'],

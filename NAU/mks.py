@@ -173,6 +173,8 @@ class MarketingSite:
             
             log.debug("Added page {page_id} new image with id={image_id}".format(page_id=page.id,
                                                                                  image_id=attachment_id))
+
+        page.thumbnail = page.thumbnail['attachment_id']
         
         try:
             self.getClient().call(posts.EditPost(page.id, page))

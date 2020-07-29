@@ -342,6 +342,7 @@ class CoursePage():
             .replace("=\"/static/",
                      "=\"{lms}".format(lms=self._site.get_lms_url() + self._site.get_course_path(course))) \
             .replace("src=\"/", "src=\"{lms}".format(lms=self._site.get_lms_url() + self._site.get_course_path(course))) \
-            .replace(" style=\"", " style-disable=\"")
+            .replace(" style=\"", " style-disable=\"") \
+            .strip()
         
         return content

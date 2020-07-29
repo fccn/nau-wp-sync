@@ -311,13 +311,13 @@ def main():
                                  format(page=course_page.getId(),
                                         environment=tenv,
                                         changes=changes))
-                        log.debug("Updating: " + str(list_of_changes))
+                        log.info("Marked for update: " + str(list_of_changes))
                     else:
                         log.warning('Updating {page}@{environment} - {changes} changes found!'. \
                                  format(page=course_page.getId(),
                                         environment=tenv,
                                         changes=changes))
-                        log.debug("Updating: " + str(list_of_changes))
+                        log.info("Updating: " + str(list_of_changes))
 
                         if not dest_site.updateCoursePage(course_page):
                             log.warning('Changes detected, but not updated due to unknown error on {page}@{environment}'. \

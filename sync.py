@@ -304,21 +304,23 @@ def main():
 
 
                 # verifies changes
-                changes = course_page.syncProperties(course, propertiesToSync)
+                changes, list_of_changes = course_page.syncProperties(course, propertiesToSync)
                 if changes > 0:
                     if nau.params.get('test'):
                         log.warning('Test flag enabled! Not changing {page}@{environment} - {changes} changes found!'.\
                                  format(page=course_page.getId(),
                                         environment=tenv,
                                         changes=changes))
+                        log.debug("Updating: " + str(list_of_changes))
                     else:
                         log.warning('Updating {page}@{environment} - {changes} changes found!'. \
                                  format(page=course_page.getId(),
                                         environment=tenv,
                                         changes=changes))
+                        log.debug("Updating: " + str(list_of_changes))
 
                         if not dest_site.updateCoursePage(course_page):
-                            log.warning('Changes detected, but not updated due to unknow error on {page}@{environment}'. \
+                            log.warning('Changes detected, but not updated due to unknown error on {page}@{environment}'. \
                                 format(page=course_page.getId(),
                                        environment=tenv))
                 else:

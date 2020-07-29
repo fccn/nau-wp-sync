@@ -261,6 +261,7 @@ class CoursePage():
         
         log.debug("Synchronizing wordpress page with id: " + self.getId())
         changes_count = 0
+        list_of_changes = []
         
         auto_update = self.getField('update-overview')
         if auto_update == '1':
@@ -297,6 +298,7 @@ class CoursePage():
                     last_value = page_custom_field['value']
                     page_custom_field['value'] = value
                     changes_count += 1
+                    list_of_changes.append(name)
                     log.debug(
                         "Update page {id} width field ({key}) with value: «{value}» was «{last}»".format(
                             id=self._page.id, key=name, value=sanitize_value4log(value),
@@ -308,6 +310,7 @@ class CoursePage():
                         'value': value
                     })
                     changes_count += 1
+                    list_of_changes.append(name)
                     log.debug("Add page {id} field ({key}) with value: «{value}»".format(
                         id=self._page.id,
                         key=name,
@@ -321,8 +324,9 @@ class CoursePage():
                                  title=self.getTitle()))
                 self._page.excerpt = excerpt
                 changes_count += 1
+                list_of_changes.append('excerpt')
         
-        return changes_count
+        return changes_count, list_of_changes
     
     def getContent(self, course):
         

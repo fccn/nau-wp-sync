@@ -289,7 +289,7 @@ def main():
                             
                         course.update(nau.prod.lms.getCourseAPIEnrollmentData(course_prod))
                         got_enrollment_data_from_prod = True
-                     else:
+                    else:
                         log.warning("Course not found at prod! {prod_id}".format(prod_id=course_prod_id))
 
                 else:

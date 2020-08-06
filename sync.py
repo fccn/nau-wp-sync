@@ -289,8 +289,11 @@ def main():
                             
                         course.update(nau.prod.lms.getCourseAPIEnrollmentData(course_prod))
                         got_enrollment_data_from_prod = True
-                    else:
-                        log.warning("Course not found at prod! {prod_id}".format(prod_id = course_prod_id))
+                     else:
+                        log.warning("Course not found at prod! {prod_id}".format(prod_id=course_prod_id))
+
+                else:
+                    log.warning("Course prod_id not defined!")
                 
                 
                 if not got_enrollment_data_from_prod:
@@ -302,6 +305,11 @@ def main():
 
                     course.update(nau.stage.lms.getCourseAPIEnrollmentData(course))
 
+                if not 'Certificates' in course.keys():
+                    course['Certificates'] = 0
+                    
+                if not 'Enrollments' in course.keys():
+                    course['Enrollments'] = 0
 
                 # verifies changes
                 changes, list_of_changes = course_page.syncProperties(course, propertiesToSync)

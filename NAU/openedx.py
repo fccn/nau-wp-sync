@@ -26,7 +26,16 @@ class LMS:
         self._sql = SQLTables(config.get('db'))
         self._mongo = MongoCollections(config.get('mongo'))
         self._api = OpenEDXAPI(config.get('api'))
+
+        self._scheme = config.get('api').get('scheme', 'https')
+        self._server = config.get('api').get('server')
     
+    def _lms_url(self):
+        return "{scheme}://{server}".format(
+            scheme=self._scheme,
+            server=self._server
+        )
+
     def status(self):
         return {
             'settings': self.settings,
@@ -44,11 +53,14 @@ class LMS:
     def getOrganizations(self):
         return self._sql.query("SELECT * from organizations_organization")
     
-    def getCourse(self, course):
-        log.info("getCourse %s" % course)
-        course = self._sql.query("SELECT * from course_overviews_courseoverview WHERE id='%s'" % (course))
-        if len(course) == 1:
-            return course[0]
+    def getCourse(self, course_id):
+        log.info("getCourse %s" % course_id)
+        course_sql = self._sql.query("SELECT * from course_overviews_courseoverview WHERE id='%s'" % (course_id))
+        if len(course_sql) == 1:
+            course = course_sql[0]
+            # Add LMS URL so the course image url is absolute instead of relative.
+            course["course_image_url"] = self._lms_url() + course["course_image_url"]
+            return course
         
         return None
     

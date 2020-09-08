@@ -159,22 +159,26 @@ class MarketingSite:
                                                                                                    url=course_image_url))
             
             image_response = requests.get(course_image_url)
-            image_content = image_response.content
-            mimetypes.init()
-            imageMimetype = mimetypes.guess_type(course_image_url)[0]
-            imageName = course_image_url[course_image_url.rindex('/') + 1:]
-            bits = xmlrpc.client.Binary(image_content)
-            
-            uploadImageResponse = self.getClient().call(
-                media.UploadFile({'name': imageName, 'type': imageMimetype, 'bits': bits, 'overwrite': True}))
-            attachment_id = uploadImageResponse['id']
-            
-            page.thumbnail = attachment_id
-            
-            log.debug("Added page {page_id} new image with id={image_id}".format(page_id=page.id,
-                                                                                 image_id=attachment_id))
+            image_response_len = len(image_response.content)
+            if image_response_len == 0:
+                log.warning("No image downloaded from {url}".format(url=course_image_url));
+            else:
+                image_content = image_response.content
+                mimetypes.init()
+                imageMimetype = mimetypes.guess_type(course_image_url)[0]
+                imageName = course_image_url[course_image_url.rindex('/') + 1:]
+                bits = xmlrpc.client.Binary(image_content)
+                
+                uploadImageResponse = self.getClient().call(
+                    media.UploadFile({'name': imageName, 'type': imageMimetype, 'bits': bits, 'overwrite': True}))
+                attachment_id = uploadImageResponse['id']
+                
+                page.thumbnail = attachment_id
+                
+                log.debug("Added page {page_id} new image with id={image_id}".format(page_id=page.id,
+                                                                                     image_id=attachment_id))
         
-        if not isinstance(page.thumbnail, str):
+        if isinstance(page.thumbnail, dict):
             page.thumbnail = page.thumbnail['attachment_id']
         
         try:
@@ -282,7 +286,7 @@ class CoursePage():
                         .format(page=self.getId(),
                                 title=self.getTitle()))
         
-        for (name, value) in properties_to_sync(course, self._site.get_lms_url()).items():
+        for (name, value) in properties_to_sync(course).items():
             course_property_found = False
             value = sanitize_value(value)
             

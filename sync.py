@@ -35,7 +35,7 @@ def recursive_map(tree, key, map):
 
 
 
-def propertiesToSync(course, base_url):
+def propertiesToSync(course):
 
     """
     
@@ -90,8 +90,6 @@ def propertiesToSync(course, base_url):
  
     """
     
-    log.info("Using {url} as base_url".format(url=base_url))
-    
     log.debug("Course Keys Available: {k}".format(k=', '.join([k for k in course])))
     
     youtube_id = ""
@@ -130,7 +128,7 @@ def propertiesToSync(course, base_url):
         youtube=youtube_id,
         
         # values that could be an url
-        nau_lms_course_media_image_raw=transform_relative_to_absolute_url(course['course_image_url'], base_url),
+        nau_lms_course_media_image_raw=course['course_image_url'],
         
         # nau_lms_course_media_course_image=transform_relative_to_absolute_url(course['media']['course_image']['uri'],
         #                                                                     base_url),

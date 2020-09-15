@@ -7,38 +7,7 @@ import yaml
 from .openedx import LMS
 from .mks import MarketingSites
 
-
-class Environment():
-	
-	def __init__(self, name, config):
-		self.name = name
-		self.lms = LMS(config["lms"])
-		self.mks = MarketingSites(config["mks"])
-	
-	def __str__(self):
-		return self.getName()
-	
-	def getName(self):
-		return self.name
-	
-	def getLanguages(self):
-		return self.mks.getLanguages()
-	
-	def getMarketingSites(self):
-		return self.mks.allSites()
-	
-	def status(self):
-		return {
-			'name': self.getName(),
-			'lms': self.lms.status(),
-			'mks': self.mks.status()
-		}
-
-
 class NAU:
-	stage = None
-	prod = None
-	
 	def __init__(self, params):
 		
 		self.params = params
@@ -59,29 +28,26 @@ class NAU:
 		# https://docs.python.org/3/library/logging.config.html#logging-config-dictschema
 		logging.config.dictConfig(self.config.get('logging'))
 		
-		self.stage = Environment("stage", config["stage"])
-		self.prod = Environment("prod", config["prod"])
+		self.lms = LMS(config["lms"])
+		self.mks = MarketingSites(config["mks"])
 		
 		log.info("NAU Configured!")
 		log.debug(self.config)
 		log.debug(self.params)
 	
+	def getLanguages(self):
+		return self.mks.getLanguages()
+	
+	def getMarketingSites(self):
+		return self.mks.allSites()
+	
 	def status(self):
 		return {
-			'general': self.config,
-			'stage': self.stage.status(),
-			'prod': self.prod.status(),
+			'name': self.getName(),
+			'lms': self.lms.status(),
+			'mks': self.mks.status()
 		}
-	
+
 	def __str__(self):
 		return json.dumps(self.status())
 	
-	def getTargetEnvironment(self):
-		
-		if self.params.get("target_environment") == "stage":
-			return self.stage
-		
-		if self.params.get("target_environment") == "prod":
-			return self.prod
-		
-		raise NameError('Unknown Environment')

@@ -93,8 +93,9 @@ class MarketingSite:
     def getLanguage(self):
         return self.settings["language"]
     
-    def getCoursePageByIDMatchingField(self, courseid, tag):
+    def getCoursePageByIDMatchingField(self, courseid):
         courses = self.getAllCoursesPages()
+        tag = self.getMarketingCourseIdFieldName()
         for course in courses:
             if course.getField(tag) == courseid:
                 return course
@@ -194,6 +195,8 @@ class MarketingSite:
         
         return True
 
+    def getMarketingCourseIdFieldName(self):
+        return self.settings["course_id_field_name"]
 
 class CoursePage():
     """
@@ -228,6 +231,9 @@ class CoursePage():
                 return page_custom_field['value']
         
         return None
+
+    def getCourseId(self):
+        return self.getField(self._site.getMarketingCourseIdFieldName())
     
     def meta(self):
         return {
@@ -235,8 +241,8 @@ class CoursePage():
             'title': self._page.title,
             # 'fields': self._page["custom_fields"],
             # 'isCourse': self.isCourse(), # doesn't make sense anymore
-            'isProdSyncable': self.isProdSyncable(),
-            'isStageSyncable': self.isStageSyncable(),
+            #'isProdSyncable': self.isProdSyncable(),
+            #'isStageSyncable': self.isStageSyncable(),
             # 'terms': self._page['terms']
         }
     
@@ -247,19 +253,19 @@ class CoursePage():
                 return True
         return False
     
-    def isProdSyncable(self):
-        for custom_field in self._page["custom_fields"]:
-            if custom_field['key'] == 'course-id-prod':
-                return custom_field['value'] if custom_field['value'] != '' else False
+    # def isProdSyncable(self):
+    #     for custom_field in self._page["custom_fields"]:
+    #         if custom_field['key'] == 'course-id-prod':
+    #             return custom_field['value'] if custom_field['value'] != '' else False
         
-        return False
+    #     return False
     
-    def isStageSyncable(self):
-        for custom_field in self._page["custom_fields"]:
-            if custom_field['key'] == 'nau_lms_course_id':
-                return custom_field['value'] if custom_field['value'] != '' else False
+    # def isStageSyncable(self):
+    #     for custom_field in self._page["custom_fields"]:
+    #         if custom_field['key'] == 'nau_lms_course_id':
+    #             return custom_field['value'] if custom_field['value'] != '' else False
         
-        return False
+    #     return False
     
     def syncProperties(self, course, properties_to_sync):
         

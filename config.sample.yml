@@ -52,6 +52,7 @@ mks:
     basic_auth_password: <<PASS>> # optional
     username: <<WP_USER>>
     password: <<WP_PASS>>
+    course_id_field_name: nau_lms_course_id # for STAGE. Use course-id-prod for PROD.
   - id: en
     language: en_US
     server: en-www.stage.nau.fccn.pt
@@ -60,4 +61,5 @@ mks:
     basic_auth_password: <<PASS>> # optional
     username: <<WP_USER>>
     password: <<WP_PASS>>
+    course_id_field_name: nau_lms_course_id # for STAGE. Use course-id-prod for PROD.
 

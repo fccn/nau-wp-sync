@@ -10,7 +10,6 @@ import xmlrpc
 
 from .utils import sanitize_value4log, is_different, sanitize_value
 
-
 class MarketingSites:
     _sites = None
     

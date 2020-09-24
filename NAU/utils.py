@@ -25,25 +25,28 @@ def IXR_Date(datetime_obj):
 
 
 def sanitize_value(value):
-	if value is None:
-		return value
-	
 	if type(value) is bool:
-		if value:
-			return 1
+		if (value):
+			value = 1
 		else:
-			return 0
+			value = 0
 	
 	if type(value) is int:
-		return value
+		value = str(value)
+
+	if type(value) is datetime.datetime:
+		value = value.strftime("%Y-%m-%d %H:%M:%S")
 	
-	if type(value) is datetime:
-		return value
-	
-	return value
+	if value == None:
+		value = ""
+
+	return value	
 
 
 def sanitize_value4log(s):
+	if type(s) is datetime.datetime:
+		s = s.strftime("%Y-%m-%d %H:%M:%S")
+	
 	if type(s) is str:
 		s.replace('\n', ' ').replace('\r', '')
 		s = textwrap.shorten(s, width=30)
@@ -52,50 +55,7 @@ def sanitize_value4log(s):
 
 def is_different(a, b):
 	log.debug("Comparing {ta} with {tb}".format(ta=type(a), tb=type(b)))
-
-    # IXR_Date is str type with a special format
-	# it is easier to convert datetime into IXR_Date than IXR_Date in datetime
-	# convert datetime into IXR_Date if detected.
-
-	if type(b) is str and type(a) is datetime.datetime:
-		if is_IXR_Date(b):
-			a=IXR_Date(a)
-	
-	if type(b) is datetime.datetime and type(a) is str:
-		if is_IXR_Date(a):
-			b=IXR_Date(b)
-	
 	if type(a) == type(b):
 		return a != b
-	
-	if type(a) is bool:
-		if (a):
-			a = 1
-		else:
-			a = 0
-	
-	if type(b) is bool:
-		if (b):
-			b = 1
-		else:
-			b = 0
-	
-	if type(a) is int:
-		a = str(a)
-	
-	if type(b) is int:
-		b = str(b)
-	
-	if type(a) is datetime.datetime:
-		a = a.strftime("%Y-%m-%d %H:%M:%S")
-	
-	if type(b) is datetime.datetime:
-		b = b.strftime("%Y-%m-%d %H:%M:%S")
-	
-	if a == None:
-		a = ""
-	
-	if b == None:
-		b = ""
-	
-	return a != b
+	else:
+		return convertValue(a) != convertValue(b)

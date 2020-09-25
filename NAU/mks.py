@@ -93,12 +93,12 @@ class MarketingSite:
         return self.settings["language"]
     
     def getCoursePageByIDMatchingField(self, courseid):
-        courses = self.getAllCoursesPages()
+        courses_pages_match = []
         tag = self.getMarketingCourseIdFieldName()
-        for course in courses:
-            if course.getField(tag) == courseid:
-                return course
-        return False
+        for course_page in self.getAllCoursesPages():
+            if course_page.getField(tag) == courseid:
+                courses_pages_match.append(course_page)
+        return courses_pages_match
     
     def getCoursePageWithTag(self, course, tag):
         return self.getCoursePageByID(course["id"], tag)

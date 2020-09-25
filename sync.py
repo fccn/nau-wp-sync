@@ -231,9 +231,13 @@ def main():
         for lms_course in lms_courses:
  
             # Find Course Pages that can be updated with content
-            course_page = dest_site.getCoursePageByIDMatchingField(lms_course["id"])
-            
-            if course_page:
+            lms_course_id = lms_course["id"]
+            course_pages = dest_site.getCoursePageByIDMatchingField(lms_course_id)
+            if len(course_pages) > 1:
+                log.warning('Duplicated WordPress pages for course id {course_id}'.format(course_id=lms_course_id))
+
+            for course_page in course_pages:
+
                 block_updates = course_page.getField('block-auto-updates')
                 if block_updates == '1':
                     # Just skip to next course!

@@ -76,6 +76,30 @@ class OpenEDXAPI:
 	def getEnrollmentData(self, course_id):
 		
 		url = self.url(self._api_enrollment_path + course_id)
+
+		# Output example:
+		# {
+		# 	"course_id": "course-v1:CNCS+CC101+2018_T1",
+		# 	"course_name": "Cidadão Ciberseguro",
+		# 	"enrollment_start": null,
+		# 	"enrollment_end": null,
+		# 	"course_start": "2020-02-18T12:00:00Z",
+		# 	"course_end": "2020-12-31T12:00:00Z",
+		# 	"invite_only": false,
+		# 	"course_modes": [
+		# 		{
+		# 			"slug": "honor",
+		# 			"name": "Certificado",
+		# 			"min_price": 0,
+		# 			"suggested_prices": "",
+		# 			"currency": "eur",
+		# 			"expiration_datetime": null,
+		# 			"description": null,
+		# 			"sku": null,
+		# 			"bulk_sku": null
+		# 		}
+		# 	]
+		# }
 		
 		log.info("Getting getEnrollmentData %s" % url)
 		

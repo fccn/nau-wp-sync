@@ -152,8 +152,9 @@ class MarketingSite:
             page.status = 'private'
         
         course_image_url = course.getField('nau_lms_course_media_image_raw')
+        old_course_image_url = course.getOldFieldValue('nau_lms_course_media_image_raw')
         
-        if len(page.thumbnail) == 0 and len(course_image_url) > 0:
+        if len(course_image_url) > 0 and course_image_url != old_course_image_url:
             log.info(
                 "No thumbnail detected! Uploading new file to media library. {thumb} {url}".format(thumb=page.thumbnail,
                                                                                                    url=course_image_url))
@@ -209,6 +210,14 @@ class CoursePage():
         self._site = wp_site
         
         log.info("Loaded: {id} {title}".format(id=self.getId(), title=self.getTitle()))
+
+        # copy custom fields to a dictionary so we could view old values after changing current ones.
+        self._page_old_custom_fields_dict = {}
+        for page_custom_field in self._page.custom_fields:
+            page_custom_field_key = page_custom_field['key']
+            page_custom_field_value = page_custom_field['value']
+            self._page_old_custom_fields_dict[page_custom_field_key] = page_custom_field_value
+
     
     # create private variable containing all course properties to sync
     # self._props = lms_course.properties_to_sync()
@@ -230,6 +239,9 @@ class CoursePage():
                 return page_custom_field['value']
         
         return None
+
+    def getOldFieldValue(self, key):
+        return self._page_old_custom_fields_dict.get(key)
 
     def getCourseId(self):
         return self.getField(self._site.getMarketingCourseIdFieldName())

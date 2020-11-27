@@ -153,35 +153,26 @@ class MarketingSite:
         
         course_image_url = course.getField('nau_lms_course_media_image_raw')
         old_course_image_url = course.getOldFieldValue('nau_lms_course_media_image_raw')
+
+        # Needs a separate edit post call to remove image thumbnail.
+        if old_course_image_url is not None and len(old_course_image_url) > 0 and course_image_url != old_course_image_url:
+            page.thumbnail = 0
+            log.info("Remove image thumbnail")
+            self._edit_post(page)
         
         if len(course_image_url) > 0 and course_image_url != old_course_image_url:
-            log.info(
-                "No thumbnail detected! Uploading new file to media library. {thumb} {url}".format(thumb=page.thumbnail,
-                                                                                                   url=course_image_url))
-            
-            image_response = requests.get(course_image_url)
-            image_response_len = len(image_response.content)
-            if image_response_len == 0:
-                log.warning("No image downloaded from {url}".format(url=course_image_url));
-            else:
-                image_content = image_response.content
-                mimetypes.init()
-                imageMimetype = mimetypes.guess_type(course_image_url)[0]
-                imageName = course_image_url[course_image_url.rindex('/') + 1:]
-                bits = xmlrpc.client.Binary(image_content)
-                
-                uploadImageResponse = self.getClient().call(
-                    media.UploadFile({'name': imageName, 'type': imageMimetype, 'bits': bits, 'overwrite': True}))
-                attachment_id = uploadImageResponse['id']
-                
-                page.thumbnail = attachment_id
-                
-                log.debug("Added page {page_id} new image with id={image_id}".format(page_id=page.id,
-                                                                                     image_id=attachment_id))
-        
+            attachment_id = self._upload_image_thumbnail(course_image_url)
+            page.thumbnail = attachment_id
+
         if isinstance(page.thumbnail, dict):
             page.thumbnail = page.thumbnail['attachment_id']
         
+        return self._edit_post(page)
+
+    def getMarketingCourseIdFieldName(self):
+        return self.settings["course_id_field_name"]
+
+    def _edit_post(self, page):
         try:
             self.getClient().call(posts.EditPost(page.id, page))
             log.info("Updated wordpress page with id: " + page.id)
@@ -192,11 +183,30 @@ class MarketingSite:
             log.critical("Unexpected error: {msg}".format(msg=sys.exc_info()[0]))
             log.debug("Skipping... {page_id}".format(page_id=page.id))
             return False
-        
         return True
 
-    def getMarketingCourseIdFieldName(self):
-        return self.settings["course_id_field_name"]
+    def _upload_image_thumbnail(self, image_url):
+        log.info("Uploading new page image thumbnail. {url}".format(url=image_url))
+        attachment_id = None
+
+        image_response = requests.get(image_url)
+        image_response_len = len(image_response.content)
+        if image_response_len == 0:
+            log.warning("No image downloaded from {url}".format(url=image_url));
+        else:
+            image_content = image_response.content
+            mimetypes.init()
+            imageMimetype = mimetypes.guess_type(image_url)[0]
+            imageName = image_url[image_url.rindex('/') + 1:]
+            bits = xmlrpc.client.Binary(image_content)
+
+            uploadImageResponse = self.getClient().call(
+                media.UploadFile({'name': imageName, 'type': imageMimetype, 'bits': bits, 'overwrite': True}))
+            attachment_id = uploadImageResponse['id']
+
+            log.debug("Added course image thumbnail with id={image_id}".format(image_id=attachment_id))
+        return attachment_id
+
 
 class CoursePage():
     """

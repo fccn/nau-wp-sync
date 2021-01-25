@@ -1,0 +1,6 @@
+version: '2'
+
+services:
+  nau-wp-sync:
+    build: .
+    container_name: nau-wp-sync

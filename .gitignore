@@ -5,3 +5,4 @@ config.yml
 venv/
 NAU/__pycache__/*
 *.log.*
+.vscode/

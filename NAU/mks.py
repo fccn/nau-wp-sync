@@ -270,7 +270,7 @@ class CoursePage():
     def isCourse(page):
         # Is course based on category?
         for term in page.terms:
-            if term.slug == 'curso':
+            if term.slug in ('curso', 'course'):
                 return True
         return False
     

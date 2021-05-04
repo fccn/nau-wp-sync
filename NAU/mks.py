@@ -124,6 +124,7 @@ class MarketingSite:
                         {'post_type': 'page',
                          'offset': offset,
                          'number': posts_per_request,
+                         'lang': 'pt,en',
                          }, results_class=WordPressPage))  # CoursePage
                 current_pages_len = len(current_pages)
                 pages.extend(current_pages)

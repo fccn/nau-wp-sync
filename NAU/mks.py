@@ -163,7 +163,8 @@ class MarketingSite:
         
         if len(course_image_url) > 0 and course_image_url != old_course_image_url:
             attachment_id = self._upload_image_thumbnail(course_image_url)
-            page.thumbnail = attachment_id
+            if (attachment_id is not None):
+                page.thumbnail = attachment_id
 
         if isinstance(page.thumbnail, dict):
             page.thumbnail = page.thumbnail['attachment_id']
@@ -201,11 +202,14 @@ class MarketingSite:
             imageName = image_url[image_url.rindex('/') + 1:]
             bits = xmlrpc.client.Binary(image_content)
 
-            uploadImageResponse = self.getClient().call(
-                media.UploadFile({'name': imageName, 'type': imageMimetype, 'bits': bits, 'overwrite': True}))
-            attachment_id = uploadImageResponse['id']
+            try:
+                uploadImageResponse = self.getClient().call(
+                    media.UploadFile({'name': imageName, 'type': imageMimetype, 'bits': bits, 'overwrite': True}))
+                attachment_id = uploadImageResponse['id']
+                log.debug("Added course image thumbnail with id={image_id}".format(image_id=attachment_id))
+            except:
+                log.error("Error uploading course image with URL: {url}".format(url=image_url))
 
-            log.debug("Added course image thumbnail with id={image_id}".format(image_id=attachment_id))
         return attachment_id
 
 

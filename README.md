@@ -62,23 +62,41 @@ O passo de pesquisa é sempre:
       - Finalmente é preciso consultar a collection “definitions” pesquisando pelo “_id” do objeto referenciado por block[“definition”]
  
 Este é um script mongodb que lista todos os objetos a colocar no Wordpress!
- 
-    db.modulestore.active_versions.find({"course":"IPLR02", "org":"IPLeiria", "run":"I2019"}).forEach(
+
+    db.modulestore.active_versions.find({"course":"IVOSAND", "org":"FCT", "run":"2021_T2"}).forEach(
         function(obj) {        
             var published_id = obj["versions"]["published-branch"];
             struct_obj = db.modulestore.structures.find(published_id).forEach(
               function(obj) {
                   obj["blocks"].forEach(
                     function(block) {
-                        if(block["block_type"]=="about") {
-                            print( {
+                        printjson( {
+                            "block_id": block["block_id"],
+                            "content": db.modulestore.definitions.findOne({"_id" : block["definition"]})["fields"]["data"]
+                        } );
+                    }
+                  );
+              }
+            );
+        }
+    )
+
+    db.modulestore.active_versions.find({"course":"IVOSAND", "org":"FCT", "run":"2021_T2"}).forEach(
+        function(obj) {        
+            var published_id = obj["versions"]["published-branch"];
+            struct_obj = db.modulestore.structures.find(published_id).forEach(
+              function(obj) {
+                  obj["blocks"].forEach(
+                    function(block) {
+                        //if(block["block_type"]=="about") {
+                            printjson( {
                                 "block_id": block["block_id"],
                                 //"edited_on": block["edit_info"]["edited_on"],
                                 // "content_id": block["edit_info"]["source_version"],
                                 "content": db.modulestore.definitions.findOne({"_id" : block["definition"]})["fields"]["data"],
                                 // "block": block
                             } );
-                        }
+                        //}
                     }
                   );
               }

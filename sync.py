@@ -82,6 +82,9 @@ def propertiesToSync(course):
     eligible_for_financial_aid
     language
     certificate_available_date
+    end_date
+    start_date
+        
     activeVersion
     about
     Certificates
@@ -106,9 +109,10 @@ def propertiesToSync(course):
     
         nau_lms_course_start=course['start'],
         nau_lms_course_end=course['end'],
-        
         nau_lms_course_enrollment_start=course['enrollment_start'],
         nau_lms_course_enrollment_end=course['enrollment_end'],
+        nau_lms_course_advertised_start=course['advertised_start'],
+        nau_lms_course_announcement=course['announcement'],
         
         nau_lms_course_name=course['display_name'],
         nau_lms_course_number=course['display_number_with_default'],
@@ -120,6 +124,9 @@ def propertiesToSync(course):
     
         nau_lms_course_catalog_visibility=course['catalog_visibility'],
         nau_lms_course_self_paced=course['self_paced'],
+
+        # not working...
+        # nau_lms_course_language=course['language'],
         
         nau_lms_course_invitation_only=bool(course['invitation_only']),
         nau_lms_course_certificates=int(course['Certificates']),

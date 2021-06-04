@@ -88,7 +88,10 @@ def propertiesToSync(course):
     activeVersion
     about
     Certificates
+    CertificatesForAllCourseRuns
     Enrollments
+    EnrollmentsForAllCourseRuns
+    CourseRunsCount
     enrollment
  
     """
@@ -125,27 +128,17 @@ def propertiesToSync(course):
         nau_lms_course_catalog_visibility=course['catalog_visibility'],
         nau_lms_course_self_paced=course['self_paced'],
 
-        # not working...
         nau_lms_course_language=course['language'],
         
         nau_lms_course_invitation_only=bool(course['invitation_only']),
         nau_lms_course_certificates=int(course['Certificates']),
+        nau_lms_course_certificates_all_course_runs=int(course['CertificatesForAllCourseRuns']),
         nau_lms_course_enrollments=int(course['Enrollments']),
+        nau_lms_course_enrollments_all_course_runs=int(course['EnrollmentsForAllCourseRuns']),
+        nau_lms_course_runs_count=int(course['CourseRunsCount']),
         
         youtube=youtube_id,
-        
-        # values that could be an url
         nau_lms_course_media_image_raw=course['course_image_url'],
-        
-        # nau_lms_course_media_course_image=transform_relative_to_absolute_url(course['media']['course_image']['uri'],
-        #                                                                     base_url),
-        # nau_lms_course_media_course_video=transform_relative_to_absolute_url(course['media']['course_video']['uri'],
-        #                                                                     base_url),
-        # nau_lms_course_media_image_raw=transform_relative_to_absolute_url(course['media']['image']['raw'], base_url),
-        # nau_lms_course_media_image_small=transform_relative_to_absolute_url(course['media']['image']['small'],
-        #                                                                    base_url),
-        # nau_lms_course_media_image_large=transform_relative_to_absolute_url(course['media']['image']['large'],
-        #                                                                    base_url),
     )
     
     if "about" in course:

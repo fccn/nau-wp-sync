@@ -71,11 +71,22 @@ class LMS:
         return self._sql.query("SELECT * FROM course_overviews_courseoverview")
         
     def getCourseExtraData(self, course):
+        course_id = course["id"]
+        # Eg. from course-v1:CENJOR+FluxoFoto+2021_T2 to course-v1:CENJOR+FluxoFoto
+        course_id_without_run = course_id[:course_id.rfind('+')]
         r = {
             "Enrollments": self._sql.get(
-                "SELECT count(*) FROM student_courseenrollment WHERE course_id = '%s'" % (course["id"])),
+                "SELECT count(1) FROM student_courseenrollment WHERE course_id = '{course_id}'".format(course_id=course_id)),
             "Certificates": self._sql.get(
-                "SELECT count(*) FROM certificates_generatedcertificate WHERE course_id = '%s'" % (course["id"])),
+                "SELECT count(1) FROM certificates_generatedcertificate WHERE course_id = '{course_id}'".format(course_id=course_id)),
+            "EnrollmentsForAllCourseRuns": self._sql.get(
+                "SELECT count(1) FROM student_courseenrollment WHERE course_id like '{course_id_without_run}%'"
+                    .format(course_id_without_run=course_id_without_run)),
+            "CertificatesForAllCourseRuns": self._sql.get(
+                "SELECT count(1) FROM certificates_generatedcertificate WHERE course_id like '{course_id_without_run}%'".format(course_id_without_run=course_id_without_run)),
+            "CourseRunsCount": self._sql.get(
+                "SELECT count(1) FROM course_overviews_courseoverview WHERE id like '{course_id_without_run}%'"
+                    .format(course_id_without_run=course_id_without_run)),
         }
         
         log.info("Course {id} | Enrollments = {enrolls} | Certificates = {certs}".format(id=course["id"], enrolls=r["Enrollments"],certs=r["Certificates"]))

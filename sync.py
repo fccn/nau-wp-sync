@@ -126,7 +126,7 @@ def propertiesToSync(course):
         nau_lms_course_self_paced=course['self_paced'],
 
         # not working...
-        # nau_lms_course_language=course['language'],
+        nau_lms_course_language=course['language'],
         
         nau_lms_course_invitation_only=bool(course['invitation_only']),
         nau_lms_course_certificates=int(course['Certificates']),
@@ -268,6 +268,7 @@ def main():
                                  title=course_page.getTitle()))
                 course.update(nau.lms.getCourseAboutData(course, nau.mks.getLanguages()))
                 course.update(nau.lms.getCourseExtraData(course))
+                course.update(nau.lms.getCourseLanguage(course))
 
                 if not 'Certificates' in course.keys():
                     course['Certificates'] = 0

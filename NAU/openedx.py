@@ -135,3 +135,12 @@ class LMS:
     
         return course
 
+    def getCourseLanguage(self, base_course):
+        active_course = self.getCourseActiveVersion(base_course)
+        structure = self.getCourseStructure(active_course["versions"]["published-branch"])
+        for block in structure["blocks"]:
+            if "fields" in block: 
+                lang = block.get("fields").get("language")
+                if lang is not None:
+                    return {"language": lang }
+        return {"language": None } # default

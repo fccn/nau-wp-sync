@@ -61,8 +61,26 @@ O passo de pesquisa é sempre:
       - O “definition” indica qual o objeto em “definitions” que tem este conteúdo
       - Finalmente é preciso consultar a collection “definitions” pesquisando pelo “_id” do objeto referenciado por block[“definition”]
  
-Este é um script mongodb que lista todos os objetos a colocar no Wordpress!
 
+    $ mongo admin -u admin -p --host rs0/localhost
+    Enter password: <Put the value of variable `MONGO_ADMIN_PASSWORD` on the secure-nau-data repo>
+
+    use edxapp
+
+OR
+    $ mongo edxapp -u edxapp -p
+    Enter password: <Put the value of variable `EDXAPP_MONGO_PASSWORD` on the secure-nau-data repo>
+
+Or using Mongo Compass:
+    connection string like: 
+        ssh -L 27017:localhost:27017 mongo-database-machine
+        mongodb://edxapp:*****@127.0.0.1:27017/edxapp?authSource=edxapp&readPreference=primary&appname=MongoDB%20Compass&ssl=false
+
+
+
+
+To get the course language run:
+```
     db.modulestore.active_versions.find({"course":"IVOSAND", "org":"FCT", "run":"2021_T2"}).forEach(
         function(obj) {        
             var published_id = obj["versions"]["published-branch"];
@@ -70,17 +88,21 @@ Este é um script mongodb que lista todos os objetos a colocar no Wordpress!
               function(obj) {
                   obj["blocks"].forEach(
                     function(block) {
-                        printjson( {
-                            "block_id": block["block_id"],
-                            "content": db.modulestore.definitions.findOne({"_id" : block["definition"]})["fields"]["data"]
-                        } );
+                        if (block.fields.hasOwnProperty("language")) {
+                            print( block.fields["language"] );
+                        }
                     }
                   );
               }
             );
         }
     )
+```
 
+
+Este é um script mongodb que lista todos os objetos a colocar no Wordpress!
+
+```
     db.modulestore.active_versions.find({"course":"IVOSAND", "org":"FCT", "run":"2021_T2"}).forEach(
         function(obj) {        
             var published_id = obj["versions"]["published-branch"];
@@ -103,9 +125,10 @@ Este é um script mongodb que lista todos os objetos a colocar no Wordpress!
             );
         }
     )
- 
+```
+
 O resultado é o seguinte:
- 
+``` 
     /* 1 */
     {
         "block_id" : "effort",
@@ -171,3 +194,4 @@ O resultado é o seguinte:
         "block_id" : "description",
         "content" : ""
     }
+```
